@@ -1,0 +1,115 @@
+#################################################################################################
+#
+#  Universal Controller OpenShift Deployment
+#  
+#  Description
+#  The helm chart related to this values.yaml file
+#  deploys a Universal Agent incl. a given Namespace
+#  The following PODs will be deployed: 
+#  - Universal Agent 
+# 
+#  
+#  History:
+# 
+#
+#
+#  27.03.2025 Len    0.9.2    Added option for multiple deployments in one namespace
+#  29.04.2025 Len    1.2.0    Updated all yaml files to include environment variables.
+#  Version: 1.2.0
+#
+#################################################################################################
+
+# Namespace for the Helm-chart
+namespace: pm
+
+###################################################### Universal Agent Deployment Configuration ####################################################################################
+uaDeployment:
+  replicas: 1
+  containerName: universal-agent
+  containerImage: stonebranch/universal-agent
+  ImageTag: 7.8.0.1
+  containerPort: 7878
+  persistence:
+    enabled: true       
+    claimName: "test-pvc"
+###################################################### UA Config Values ###########################################################################################################
+uaConfig:
+  uagTransient: "yes" 
+  omsServers: "7878@ps1.stonebranchdev.cloud"
+  omsPort: "7878"
+  omsAutoStart: "no" 
+  uagagentclusters: "AGENT_CLUSTER_AKS"
+  tmpdirectory: "/var/opt/universal/tmp"
+  tracefilelines: "500000000"
+  tracetable: "0,never"
+  tracedirectory: "/var/opt/universal/trace"
+  messagelevel: "INFO"
+  codepage: "iso8859-1"
+  proxyurl: "(none)"
+  loglvl: "I"
+  txtdebug: "N"
+  netname: "OPSAUTOCONF"
+  security: "PAM"
+  sslserverauth: "NO"
+  sslclientauth: "NO"
+  sslcipherlist: "AES256-GCM-SHA384,AES256-SHA,AES128-GCM-SHA256,AES128-SHA, +
+                  ECDHE-RSA-AES256-GCM-SHA384,ECDHE-ECDSA-AES256-GCM-SHA384, +
+                  ECDHE-RSA-AES128-GCM-SHA256,ECDHE-ECDSA-AES128-GCM-SHA256, +
+                  DES-CBC3-SHA,NULL-SHA,NULL-SHA256,NULL-MD5"
+  sslciphersuites: "TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256, +
+                    TLS_AES_128_GCM_SHA256"
+  minsslprotocol: "TLS1_2"
+  maxsslprotocol: "TLS1_2"
+  datadirectory: "/var/opt/universal/uag" 
+  jtsknum: "5"
+  taskretrycount: "0"
+  taskretryinterval: "20"
+  ftpfmfaulttolerance: "NO"
+  processcanceltimeout: "10 seconds"
+  killprocesstree: "NO"
+  servicetimeout: "0"
+  extensionacceptlist: "*"
+  extensiondeployonregistration: "NO"
+  extensionpythonlist: "/usr/bin/python3,/usr/bin/python,/usr/libexec/platform-python"
+  extensionchecksumtimeout: "5s"
+  extensioncanceltimeout: "10s"
+  businessservices: "(none)"
+  otelenabletracing: "NO"
+  otelexportmetrics: "NO"
+  oteltraceendpoint: "http://localhost:4318"
+  otelmetricsendpoint: "http://localhost:4318"
+  otelmetricsexportinterval: "5"
+  otelservicename: "uagsrv"
+  oteluipservicename: "uip/${extension_name}"
+  otelsslinsecureskipverify: "NO"
+  otelsslcacertpath: "(none)"
+  otelsslclientcertpath: "(none)"
+  maxmessagesize: "1G"
+  maxfilesize: "536870912"
+  chunksize: "1G"
+  authenticatePeer: ""
+  omsDNSCacheTimeout: "120"
+  omsIndexCacheSize: "1048576"
+  InstallationDirectory: ""
+  omsMaxConnections: "2048"
+  omsMaxSSLProtocol: "TLS1_2"
+  omsLanguage: "ENGLISH"
+  omsLevel: 'info'
+  omsMinSSLProtocol: "TLS1_2"
+  omsMSGCleanupInterval: "1800"
+  omsMSGDataFlushInt: "1"
+  omsMSGSuppressionList: "193" 
+  NLSDirectory: ""
+  omsServiceBacklog: "200"
+  omsSVCIAddr: "*"
+  omsSVCIPort: "7878"
+  omsServiceTimeout: "600"
+  agentip: "*"
+###################################################### Service Configurations #####################################################################################################
+services:
+  uaService:
+    serviceType: ClusterIP
+    servicePort: 7878
+    targetPort: 7878
+route:
+  enabled: true  # set to true to enable Routing on OpenShift

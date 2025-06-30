@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: '{{ .Release.Name }}-ua-configmap'
+  namespace: {{ .Values.namespace }}
+data:
+  UAGTRANSIENT: {{ .Values.uaConfig.uagTransient | quote }} 
+  UAGAGENTCLUSTERS: {{ .Values.uaConfig.uagagentclusters | quote }} 
+  UAGOMSSERVERS: {{ .Values.uaConfig.omsServers | quote }}
+  OMS_PORT: {{ .Values.uaConfig.omsPort | quote }} 
+  OMSAUTOSTART: {{ .Values.uaConfig.omsAutoStart | quote }}
+  TMP_DIRECTORY: {{ .Values.uaConfig.tmpdirectory | quote }}
+  TRACE_FILE_LINES: {{ .Values.uaConfig.tracefilelines | quote }}
+  TRACE_TABLE: {{ .Values.uaConfig.tracetable | quote }}
+  TRACE_DIRECTORY: {{ .Values.uaConfig.tracedirectory | quote }}
+  MESSAGE_LEVEL: {{ .Values.uaConfig.messagelevel | quote }}
+  CODEPAGE: {{ .Values.uaConfig.codepage | quote }}
+  PROXY_URL: {{ .Values.uaConfig.proxyurl | quote }}
+  LOGLVL: {{ .Values.uaConfig.loglvl | quote }}
+  TXTDEBUG: {{ .Values.uaConfig.txtdebug | quote }}
+  NETNAME: {{ .Values.uaConfig.netname | quote }}
+  SECURITY: {{ .Values.uaConfig.security | quote }}
+  SSL_SERVER_AUTH: {{ .Values.uaConfig.sslserverauth | quote }}
+  SSL_CLIENT_AUTH: {{ .Values.uaConfig.sslclientauth | quote }}
+  SSL_CIPHER_LIST: {{ .Values.uaConfig.sslcipherlist | quote }}
+  SSL_CIPHER_SUITES: {{ .Values.uaConfig.sslciphersuites | quote }}
+  MIN_SSL_PROTOCOL: {{ .Values.uaConfig.minsslprotocol | quote }}
+  MAX_SSL_PROTOCOL: {{ .Values.uaConfig.maxsslprotocol | quote }}
+  DATA_DIRECTORY: {{ .Values.uaConfig.datadirectory | quote }}
+  AGENT_IP: {{ .Values.uaConfig.agentip | quote }}
+  JTSK_NUM: {{ .Values.uaConfig.jtsknum | quote }}
+  TASK_RETRY_COUNT: {{ .Values.uaConfig.taskretrycount | quote }}
+  TASK_RETRY_INTERVAL: {{ .Values.uaConfig.taskretryinterval | quote }}
+  FTP_FM_FAULT_TOLERANCE: {{ .Values.uaConfig.ftpfmfaulttolerance | quote }}
+  PROCESS_CANCEL_TIMEOUT: {{ .Values.uaConfig.processcanceltimeout | quote }}
+  KILL_PROCESS_TREE: {{ .Values.uaConfig.killprocesstree | quote }}
+  SERVICE_TIMEOUT: {{ .Values.uaConfig.servicetimeout | quote }}
+  EXTENSION_ACCEPT_LIST: {{ .Values.uaConfig.extensionacceptlist | quote }} 
+  EXTENSION_DEPLOY_ON_REGISTRATION: {{ .Values.uaConfig.extensiondeployonregistration | quote }}
+  EXTENSION_PYTHON_LIST: {{ .Values.uaConfig.extensionpythonlist | quote }}
+  EXTENSION_CHECKSUM_TIMEOUT: {{ .Values.uaConfig.extensionchecksumtimeout | quote }}
+  EXTENSION_CANCEL_TIMEOUT: {{ .Values.uaConfig.extensioncanceltimeout | quote }}
+  BUSINESS_SERVICES: {{ .Values.uaConfig.businessservices | quote }}
+  OTEL_ENABLE_TRACING: {{ .Values.uaConfig.otelenabletracing | quote }}
+  OTEL_EXPORT_METRICS: {{ .Values.uaConfig.otelexportmetrics | quote }}
+  OTEL_TRACE_ENDPOINT: {{ .Values.uaConfig.oteltraceendpoint | quote }}
+  OTEL_METRICS_ENDPOINT: {{ .Values.uaConfig.otelmetricsendpoint | quote }}
+  OTEL_METRICS_EXPORT_INTERVAL: {{ .Values.uaConfig.otelmetricsexportinterval | quote }}
+  OTEL_SERVICE_NAME: {{ .Values.uaConfig.otelservicename | quote }}
+  OTEL_UIP_SERVICE_NAME: {{ .Values.uaConfig.oteluipservicename | quote }}
+  OTEL_SSL_INSECURE_SKIP_VERIFY: {{ .Values.uaConfig.otelsslinsecureskipverify | quote }}
+  OTEL_SSL_CA_CERT_PATH: {{ .Values.uaConfig.otelsslcacertpath | quote }}
+  OTEL_SSL_CLIENT_CERT_PATH: {{ .Values.uaConfig.otelsslclientcertpath | quote }}
+  AUTHENTICATE_PEER: {{ .Values.uaConfig.authenticatePeer | quote }}
+  OMSDNSCACHETIMEOUT: {{ .Values.uaConfig.omsDNSCacheTimeout | quote }}
+  OMSINDEXCACHESIZE: {{ .Values.uaConfig.omsIndexCacheSize | quote }}
+  INSTALLATION_DIRECTORY: {{ .Values.uaConfig.InstallationDirectory | quote }}
+  OMSMAXCONNECTIONS: {{ .Values.uaConfig.omsMaxConnections | quote }}
+  OMSMAXDATAFILESIZE: {{ .Values.uaConfig.maxfilesize | quote }}
+  OMSMAXMSGSIZE: {{ .Values.uaConfig.maxmessagesize | quote }}
+  OMSMAXSSLPROTOCOL: {{ .Values.uaConfig.omsMaxSSLProtocol | quote }}
+  OMSLANG: {{ .Values.uaConfig.omsLanguage | quote }}
+  OMSLEVEL: {{ .Values.uaConfig.omsLevel | quote }}
+  OMSMINSSLPROTOCOL: {{ .Values.uaConfig.omsMinSSLProtocol | quote }}
+  OMSMSGCHUNKSIZE: {{ .Values.uaConfig.chunksize | quote }}
+  OMSMSGCLEANUPINTERVAL: {{ .Values.uaConfig.omsMSGCleanupInterval | quote }}
+  OMSMSGDATAFLUSHINT: {{ .Values.uaConfig.omsMSGDataFlushInt | quote }}
+  OMSMSGSUPPRESSIONLIST: {{ .Values.uaConfig.omsMSGSuppressionList | quote }}
+  NLS_DIRECTORY: {{ .Values.uaConfig.NLSDirectory | quote }}
+  OMSSERVICEBACKLOG: {{ .Values.uaConfig.omsServiceBacklog | quote }}
+  OMSSVCIPADDR: {{ .Values.uaConfig.omsSVCIAddr | quote }}
+  OMSSVCPORT: {{ .Values.uaConfig.omsSVCIPort | quote }}
+  OMSSERVICETIMEOUT: {{ .Values.uaConfig.omsServiceTimeout | quote }}

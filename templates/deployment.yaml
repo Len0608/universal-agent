@@ -1,0 +1,364 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{ .Release.Name }}-ua-deployment'
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.uaDeployment.replicas }}
+  selector:
+    matchLabels:
+      app: '{{ .Release.Name }}-ua-app'
+  template:
+    metadata:
+      labels:
+        app: '{{ .Release.Name }}-ua-app'
+    spec:
+      securityContext:
+        fsGroup: 0
+      volumes:
+    {{- if .Values.uaDeployment.persistence.enabled }}
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.uaDeployment.persistence.claimName | quote }}
+    {{- else }}
+        - name: shared-data
+          emptyDir: {}
+    {{- end }}
+      containers:
+        - name: {{ .Values.uaDeployment.containerName }}
+          image: "{{ .Values.uaDeployment.containerImage }}:{{ .Values.uaDeployment.ImageTag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.uaDeployment.containerPort }}
+          env:
+            - name: OMS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMS_PORT
+            - name: UAGOMSSERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: UAGOMSSERVERS      
+            - name: OMSAUTOSTART
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSAUTOSTART                  
+            - name: UAGAGENTCLUSTERS
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: UAGAGENTCLUSTERS      
+            - name: UAGTRANSIENT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: UAGTRANSIENT          
+            - name: TMP_DIRECTORY
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: TMP_DIRECTORY
+            - name: TRACE_FILE_LINES
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: TRACE_FILE_LINES
+            - name: TRACE_TABLE
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: TRACE_TABLE
+            - name: TRACE_DIRECTORY
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: TRACE_DIRECTORY
+            - name: MESSAGE_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: MESSAGE_LEVEL
+            - name: CODEPAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: CODEPAGE
+            - name: PROXY_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: PROXY_URL
+            - name: LOGLVL 
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: LOGLVL
+            - name: TXTDEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: TXTDEBUG
+            - name: NETNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: NETNAME
+            - name: SECURITY
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: SECURITY
+            - name: SSL_SERVER_AUTH
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: SSL_SERVER_AUTH
+            - name: SSL_CLIENT_AUTH
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: SSL_CLIENT_AUTH
+            - name: SSL_CIPHER_LIST
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: SSL_CIPHER_LIST
+            - name: SSL_CIPHER_SUITES
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: SSL_CIPHER_SUITES
+            - name: MIN_SSL_PROTOCOL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: MIN_SSL_PROTOCOL
+            - name: MAX_SSL_PROTOCOL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: MAX_SSL_PROTOCOL
+            - name: DATA_DIRECTORY
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: DATA_DIRECTORY
+            - name: AGENT_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: AGENT_IP
+            - name: JTSK_NUM
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: JTSK_NUM
+            - name: TASK_RETRY_COUNT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: TASK_RETRY_COUNT
+            - name: TASK_RETRY_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: TASK_RETRY_INTERVAL
+            - name: FTP_FM_FAULT_TOLERANCE
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: FTP_FM_FAULT_TOLERANCE
+            - name: PROCESS_CANCEL_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: PROCESS_CANCEL_TIMEOUT
+            - name: KILL_PROCESS_TREE
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: KILL_PROCESS_TREE
+            - name: SERVICE_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: SERVICE_TIMEOUT
+            - name: EXTENSION_ACCEPT_LIST
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: EXTENSION_ACCEPT_LIST
+            - name: EXTENSION_DEPLOY_ON_REGISTRATION
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: EXTENSION_DEPLOY_ON_REGISTRATION
+            - name: EXTENSION_PYTHON_LIST
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: EXTENSION_PYTHON_LIST
+            - name: EXTENSION_CHECKSUM_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: EXTENSION_CHECKSUM_TIMEOUT
+            - name: EXTENSION_CANCEL_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: EXTENSION_CANCEL_TIMEOUT
+            - name: BUSINESS_SERVICES
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: BUSINESS_SERVICES
+            - name: OTEL_ENABLE_TRACING
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OTEL_ENABLE_TRACING
+            - name: OTEL_EXPORT_METRICS
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OTEL_EXPORT_METRICS
+            - name: OTEL_TRACE_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OTEL_METRICS_ENDPOINT
+            - name: OTEL_METRICS_EXPORT_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OTEL_METRICS_EXPORT_INTERVAL
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OTEL_SERVICE_NAME
+            - name: OTEL_UIP_SERVICE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OTEL_UIP_SERVICE_NAME
+            - name: OTEL_SSL_INSECURE_SKIP_VERIFY
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OTEL_SSL_INSECURE_SKIP_VERIFY
+            - name: OTEL_SSL_CA_CERT_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OTEL_SSL_CA_CERT_PATH
+            - name: OTEL_SSL_CLIENT_CERT_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OTEL_SSL_CLIENT_CERT_PATH 
+            - name: OMSMAXMSGSIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSMAXMSGSIZE                             
+            - name: OMSMAXDATAFILESIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSMAXDATAFILESIZE
+            - name: OMSMSGCHUNKSIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSMSGCHUNKSIZE
+            - name: AUTHENTICATE_PEER
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: AUTHENTICATE_PEER      
+            - name: OMSDNSCACHETIMEOUT 
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSDNSCACHETIMEOUT                                                                                                                                                                        
+            - name: OMSINDEXCACHESIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSINDEXCACHESIZE                   
+            - name: INSTALLATION_DIRECTORY
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: INSTALLATION_DIRECTORY                   
+            - name: OMSMAXCONNECTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSMAXCONNECTIONS                                    
+            - name: OMSMAXSSLPROTOCOL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSMAXSSLPROTOCOL                   
+            - name: OMSLANG
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSLANG                   
+            - name: OMSLEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSLEVEL                   
+            - name: OMSMINSSLPROTOCOL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSMINSSLPROTOCOL                   
+            - name: OMSMSGCLEANUPINTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSMSGCLEANUPINTERVAL   
+            - name: OMSMSGDATAFLUSHINT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSMSGDATAFLUSHINT
+            - name: OMSMSGSUPPRESSIONLIST
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSMSGSUPPRESSIONLIST                                                   
+            - name: NLS_DIRECTORY
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: NLS_DIRECTORY                 
+            - name: OMSSERVICEBACKLOG
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSSERVICEBACKLOG                 
+            - name: OMSSVCIPADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSSVCIPADDR                 
+            - name: OMSSVCPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSSVCPORT                 
+            - name: OMSSERVICETIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: '{{ .Release.Name }}-ua-configmap'
+                  key: OMSSERVICETIMEOUT                 
+  
