@@ -8,19 +8,10 @@
 #  The following PODs will be deployed: 
 #  - Universal Agent 
 # 
-#  
-#  History:
-# 
-#
-#
-#  27.03.2025 Len    0.9.2    Added option for multiple deployments in one namespace
-#  29.04.2025 Len    1.2.0    Updated all yaml files to include environment variables.
-#  Version: 1.2.0
-#
 #################################################################################################
 
 # Namespace for the Helm-chart
-namespace: pm
+namespace: ""
 
 ###################################################### Universal Agent Deployment Configuration ####################################################################################
 uaDeployment:
@@ -30,12 +21,12 @@ uaDeployment:
   ImageTag: 7.8.0.1
   containerPort: 7878
   persistence:
-    enabled: true       
-    claimName: "test-pvc"
+    enabled: false     
+    claimName: ""
 ###################################################### UA Config Values ###########################################################################################################
 uaConfig:
   uagTransient: "yes" 
-  omsServers: "7878@ps1.stonebranchdev.cloud"
+  omsServers: "7878@127.0.0.1"
   omsPort: "7878"
   omsAutoStart: "no" 
   uagagentclusters: "AGENT_CLUSTER_AKS"
